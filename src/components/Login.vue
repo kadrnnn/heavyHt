@@ -38,7 +38,6 @@
 
 <script>
   import {login} from '../api/kadrn'
-  import bus from '../assets/js/eventBus'
 
   export default {
     name: 'Login',
@@ -60,6 +59,7 @@
               type: 'info'
             })
             let data = res.data;
+            window.sessionStorage.setItem('Authorization', data.data)
             //this.$store.commit('set_token', data["Authorization"]);
             // if (store.state.token) {
             //   this.$router.push('/')
@@ -67,10 +67,15 @@
             // } else {
             //   this.$router.replace('/login');
             // }
-            //bus.$emit('sendUser', res.data.data)
             this.$router.push({
               path: '/maincontainer/' + new Date().getTime(),
-              query: {username: res.data.data.username}
+              query: {username: this.searchable.username}
+            })
+          } else {
+            this.$notify({
+              title: "提示",
+              message: res.data.message,
+              type: 'error'
             })
           }
         })

@@ -38,19 +38,18 @@ const service = Axios
 //     return Promise.reject(error.response.data)
 //   });
 //请求发送拦截
-// service.interceptors.request.use(requestConfig => {
-//   var tokenAlias = window.localStorage.getItem("tokenAlias")
-//   var token = window.localStorage.getItem(tokenAlias)
-//   if (token && token != undefined) {
-//     requestConfig.headers.XAuthToken = token;
-//   }
-//   if (requestConfig.showLoading) {
-//     showFullScreenLoading()
-//   }
-//   return requestConfig;
-// }, error => {
-//   return Promise.reject(error);
-// });
+service.interceptors.request.use(requestConfig => {
+  var token = window.sessionStorage.getItem('Authorization')
+  if (token && token != undefined) {
+    requestConfig.headers.Authorization = token;
+  }
+  if (requestConfig.showLoading) {
+    showFullScreenLoading()
+  }
+  return requestConfig;
+}, error => {
+  return Promise.reject(error);
+});
 
 //请求结果拦截
 // let isTokenAlert = false, isErrorAlert = false;  //是否已经弹出过错误，每次多个请求报错只显示一次。token错误弹出后会跳回登录页，登陆后会自动重置标识；error错误需要自己再次重置标识，否则无法再次弹出错误
